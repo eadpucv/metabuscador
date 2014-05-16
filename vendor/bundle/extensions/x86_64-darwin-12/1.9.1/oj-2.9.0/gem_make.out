@@ -1,0 +1,31 @@
+/Users/rodrigomoya/.rvm/rubies/ruby-1.9.3-p448/bin/ruby extconf.rb 
+>>>>> Creating Makefile for ruby version 1.9.3 on x86_64-darwin12.4.0 <<<<<
+creating Makefile
+
+make  clean
+
+make
+compiling cache8.c
+compiling circarray.c
+compiling compat.c
+compiling dump.c
+compiling err.c
+compiling fast.c
+compiling hash.c
+compiling hash_test.c
+compiling object.c
+compiling odd.c
+odd.c: In function ‘oj_odd_init’:
+odd.c:104: warning: implicit conversion shortens 64-bit value into a 32-bit value
+compiling oj.c
+compiling parse.c
+compiling resolve.c
+compiling saj.c
+compiling scp.c
+compiling strict.c
+compiling val_stack.c
+linking shared-object oj.bundle
+
+make  install
+/usr/bin/install -c -m 0755 oj.bundle /Users/rodrigomoya/Trabajo/ead_metasearch/vendor/bundle/gems/oj-2.9.0/ext/oj/.gem.20140508-2908-w7dszx
+installing default oj libraries
