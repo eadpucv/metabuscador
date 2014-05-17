@@ -15,7 +15,6 @@ before do
 end
 
 get '/metasearch' do
-	
 		rows = 20
 		@previus_start = 0
 		@next_start = 0
@@ -55,8 +54,7 @@ get '/metasearch' do
 end
 
 get '/logout' do
-	session.clear
-	redirect '/metasearch'
+	cas_logout()
 end
 
 get '/login' do

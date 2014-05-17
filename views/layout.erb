@@ -68,7 +68,7 @@
 		<footer>
 			<div class="container">
 				<% if session[:cas_ticket] && !session[:cas_ticket].empty? %>
-					<%= session.inspect %>
+					<%= puts session.inspect %>
 				<% end %>
 				<p class="text-center">El <strong>Metabuscador e[ad]</strong> fue desarrollado por y para la <a href="http://www.ead.pucv.cl/"> Escuela de Arquitectura y Diseño PUCV</a>.</p>
 			</div>
@@ -77,12 +77,12 @@
 </html>
 <script type="text/javascript">
 	$(document).ready(function(){ $( "body" ).load_ead_bar({
-		id: "<%= session[:cas_extra_attributes][:id] if session[:cas_extra_attributes]%>",
-		mail: "<%= session[:cas_extra_attributes][:mail] if session[:cas_extra_attributes]%>",
-		name: "<%= session[:cas_extra_attributes][:nombre] if session[:cas_extra_attributes]%>",
-		lastname: "<%= session[:cas_extra_attributes][:apellido] if session[:cas_extra_attributes]%>",
-		wikipage: "<%= session[:cas_extra_attributes][:wikipage] if session[:cas_extra_attributes]%>",			
-		admin: "<%= session[:cas_extra_attributes][:admin] if session[:cas_extra_attributes]%>",							
+		id: "<%= session[:cas_id] if session[:cas_id] %>",
+		mail: "<%= session[:cas_email] if session[:cas_email] %>",
+		name: "<%= session[:cas_name] if session[:cas_name] %>",
+		lastname: "<%= session[:cas_lastname] if session[:cas_lastname] %>",
+		wikipage: "<%= session[:cas_wikipage] if session[:cas_wikipage] %>",			
+		admin: "<%= session[:cas_admin] if session[:cas_admin] %>",							
 		path_js: "/js/ead-bar/",
 		site_name: "buscador", // ead, wiki, metasearch, estorninos, archivo, travesias
 		site_login_url: "/login",
