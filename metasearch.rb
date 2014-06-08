@@ -39,6 +39,7 @@ get '/metasearch' do
 		@results = JSON.parse(query.body.to_s)
 		
 		## seteo las variables
+
 		@previus_start = start - rows
 		@next_start = start + rows
 
@@ -50,10 +51,12 @@ get '/metasearch' do
 			@previus_start = nil
 		end	
 
+
 	erb :layout
 end
 
 get '/logout' do
+	session.clear
 	cas_logout()
 end
 

@@ -1,83 +1,97 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head profile="http://gmpg.org/xfn/11">
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta charset="utf-8">
-		<title>Buscador e[ad]</title>
-		
-		<link href="http://personas.ead.pucv.cl/stylesheets/personas.css" media="screen" rel="stylesheet" type="text/css" />
-
-		<link href="/js/ead-bar/css/meta.css" media="screen" rel="stylesheet" type="text/css" />
-		
-		<script src="/js/jquery.js" type="text/javascript"></script>
-		<script src="/js/ead-bar/ead-bar.js" type="text/javascript"></script>		
+<html>
+	<head>
+		<title>e[ad] Búsqueda</title>
+		<link rel='icon' href="http:/www.ead.pucv.cl//favicon.gif" type="image/gif">
+		<meta charset='UTF-8'/>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<link href='giornata.css' rel='stylesheet'>
+		<link href='js/ead-bar/css/meta.css' rel='stylesheet'>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/ead-bar/ead-bar.js"></script>		
 	</head>
-	<body>
-		<div class="container">
+	<body class='fondo-blanco' lang='ES_es'>
+		<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 oculto'>
+			<form action='http://190.208.62.202:4567/metasearch'> 
+				<input type='text' name='query' placeholder='Buscar en e[ad]' id='ead_bar_input_text'>
+		 	</form>
+		</div>
+
+		<div class='wrap metabusqueda'>
 			<% if @results %>
+			<div class='fila linea'>
+				<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 sinmargen'>
+	  			<h2 class='titulo-busqueda'>resultados de la búsqueda<i class="icn icn-flecha-der icn-sm input rojo-claro"></i><span class='destacado'><%= params[:query] %></span></h2>
+	  			</div>
+			</div>
 
-				<div class="row">
-					<div class="span2"></div>
-					<div class="span8" style="padding:10px">
-						<h4>Resultados de la busqueda <span class="text-error">"<%= params[:query] %>"<span></h4>
-						<small><%= @results["numFound"].to_i %> resultados</small>
-					</div>
-					<div class="span2"></div>
-				</div>
+			<div class='fila contenido'>
+				<% @results["documents"].each do |r| %>
+					<% begin %>
+						<% 
+							if r["fields"][1]["values"][0].to_s.include? "wiki.ead.pucv.cl"
+								sites_data={"title"=>"Wiki Casiopea","class"=>"icn-casiopea","url"=>"http://wiki.ead.pucv.cl"}
+							elsif r["fields"][1]["values"][0].to_s.include? "ead.pucv.cl"
+								sites_data={"title"=>"<p class='logo-ead-marca mediano'>e[ad]</p>Escuela de Arquitectura y Diseño","class"=>"logo-ead-marca","url"=>"http://ead.pucv.cl"}
+							elsif r["fields"][1]["values"][0].to_s.include? "amereida.cl"
+								sites_data={"title"=>"Amereida","class"=>"icn-archivo","url"=>"http://www.amereida.cl"}
+							end
+						%>					
+						<div class='col-lg-6 col-md-6 col-sm-12 col-xs-12 resultado'>
+							<div class='entrada'>
+								<div class='subtitulo'>
+									<a class='enlace subtitulo' href='<%= r["fields"][1]["values"][0].to_s %>'><%= r["snippets"][1]["values"][0] %></a>
+								</div>
 
-			  	<div class="row">
-			  		<div class="span2"></div>							
-					<div class="span8" style="padding:10px">		
-						<% @results["documents"].each do |r| %>
-							<% begin %>
-								<h5>
-									<a href="<%= r["fields"][1]["values"][0].to_s %>"><%= r["snippets"][1]["values"][0] %></a>
-								</h5>
-								<p><small><%= r["snippets"][0]["values"][0] %></small></p>	
-							<% rescue %>
-								<%= r.inspect %>
-							<% end %>
-						<% end %>
-					</div>	
-					<div class="span2"></div>										
-				</div>
-
-				<div class="row">
-					<div class="span2 text-right">
-						<% unless @previus_start.nil? %>
-							<a href="metasearch?query=<%= params[:query] %>&start=<%= @previus_start %>">Anterior</a>
-						<% end %>
-					</div>
-					<div class="span8"></div>
-					<div class="span2 text-left">
-						<% unless @next_start.nil? %>
-							<a href="metasearch?query=<%= params[:query] %>&start=<%= @next_start %>">Siguiente</a>
-						<% end %>
-					</div>
-				</div>	
-
+								<a class='enlace sitioweb' href='<%= sites_data["url"] %>'>
+									<i class="icn <%= sites_data["class"] %> web rojo-claro"></i><%= sites_data["title"] %>
+								</a>							
+								<p class='descripcion'>
+									<%= r["snippets"][0]["values"][0] %>
+								</p> 
+							</div>
+						</div>
+					<% rescue %>
+						
+					<% end %>
+				<% end %>
+			</div>
 			<% else %>
-				<div class="row">
-    				<div class="alert">
-    					<strong>Tu busqueda tiene un problema, </strong> Probablemente, el campo de busqueda esta vacio.
-    				</div>
+
+			<% end %>
+		</div>
+
+		<div class='wrap metabusqueda inferior'>
+			<div class='fila paginas'>
+				<div class='marcadores'>
+					<% unless @next_start.nil? %>
+						<a class='enlace marcador' href='metasearch?query=<%= params[:query] %>&start=<%= @next_start %>'>Siguiente
+							<i class="icn icn-nav-der icn-sm input rojo-claro"></i>
+						</a>
+					<% end %>
+					<% unless @previus_start.nil? %>
+						<a class='enlace marcador' href='metasearch?query=<%= params[:query] %>&start=<%= @previus_start %>'>
+							<i class="icn icn-nav-izq icn-sm input rojo-claro"></i>Anterior
+						</a> 
+					<% end %>
+					
 				</div>
-			<% end %>			
-		</div>	
+			</div>
+		</div>
 	</body>
+	<script type="text/javascript">
+		$(document).ready(function(){ 
+			$( "body" ).load_ead_bar({
+				id: "<%= session[:cas_id] if session[:cas_id] %>",
+				mail: "<%= session[:cas_email] if session[:cas_email] %>",
+				name: "<%= session[:cas_name] if session[:cas_name] %>",
+				lastname: "<%= session[:cas_lastname] if session[:cas_lastname] %>",
+				path_js: "js/ead-bar/",
+				wikipage: "<%= session[:cas_wikipage] if session[:cas_wikipage]%>",			
+				admin: "<%= session[:cas_admin] if session[:cas_admin]%>",				
+				site_name: "metasearch", // ead, casiopea, metasearch, estorninos, archivo, travesias
+				site_login_url: "/login",
+				site_logout_url: "/logout"			
+			});
+		});
+	</script>	
 </html>
-<script type="text/javascript">
-	$(document).ready(function(){ $( "body" ).load_ead_bar({
-		id: "<%= session[:cas_id] if session[:cas_id] %>",
-		mail: "<%= session[:cas_email] if session[:cas_email] %>",
-		name: "<%= session[:cas_name] if session[:cas_name] %>",
-		lastname: "<%= session[:cas_lastname] if session[:cas_lastname] %>",
-		wikipage: "<%= session[:cas_wikipage] if session[:cas_wikipage] %>",			
-		admin: "<%= session[:cas_admin] if session[:cas_admin] %>",							
-		path_js: "/js/ead-bar/",
-		site_name: "buscador", // ead, wiki, metasearch, estorninos, archivo, travesias
-		site_login_url: "/login",
-		site_logout_url: "/logout"
-		})
-	});
-</script>

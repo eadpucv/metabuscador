@@ -1,6 +1,5 @@
 require 'active_support/all' #bug in rubycas client requires this
 require 'rubycas-client'
-require 'casclient/frameworks/rails/filter'
 
 module CasHelpers
 
@@ -34,8 +33,8 @@ module CasHelpers
         session[:cas_lastname] = st.extra_attributes["apellido"]
         session[:cas_id] = st.extra_attributes["id"]
         session[:cas_email] = st.extra_attributes["mail"]        
-        session[:cas_admin] = st.extra_attributes["admin"]        
         session[:cas_wikipage] = st.extra_attributes["wikipage"]
+        session[:cas_admin] = st.extra_attributes["admin"]
       else
         raise "Service Ticket validation failed! #{st.failure_code} - #{st.failure_message}"
       end
@@ -47,16 +46,16 @@ module CasHelpers
     session[:cas_ticket] && !session[:cas_ticket].empty?
   end
 
+  def cas_logout()
+    redirect CAS_CLIENT.logout_url(nil,nil,request.base_url+"/metasearch")
+  end
+
   def require_authorization(request, session)
     if !logged_in?(request, session)
       service_url = read_service_url(request)
       url = CAS_CLIENT.add_service_to_login_url(service_url)
       redirect url
     end
-  end
-
-  def cas_logout()
-    redirect CAS_CLIENT.logout_url(nil,nil,request.base_url+"/metasearch")
   end
 
   private
@@ -81,7 +80,5 @@ module CasHelpers
     end
     return service_url
   end
-
-
 end
 
