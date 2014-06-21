@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
-require "bundler/setup"
-require 'rubygems' 
+require 'rubygems'
+require "bundler/setup" 
 require 'sinatra'
 require 'httparty'
 require 'json'
