@@ -14,7 +14,7 @@ before do
 	process_cas_login(request, session)
 end
 
-get '/metasearch' do
+get '/' do
 		rows = 20
 		@previus_start = 0
 		@next_start = 0
@@ -62,7 +62,7 @@ end
 
 get '/login' do
 	if session[:cas_ticket] && !session[:cas_ticket].empty?
-   	redirect '/metasearch'
+   	redirect '/'
    else
    	require_authorization(request, session)
    end
