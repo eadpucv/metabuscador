@@ -64,12 +64,12 @@
 			<div class='fila paginas'>
 				<div class='marcadores'>
 					<% unless @next_start.nil? %>
-						<a class='enlace marcador' href='metasearch?query=<%= params[:query] %>&start=<%= @next_start %>'>Siguiente
+						<a class='enlace marcador' href='?query=<%= params[:query] %>&start=<%= @next_start %>'>Siguiente
 							<i class="icn icn-nav-der icn-sm input rojo-claro"></i>
 						</a>
 					<% end %>
 					<% unless @previus_start.nil? %>
-						<a class='enlace marcador' href='metasearch?query=<%= params[:query] %>&start=<%= @previus_start %>'>
+						<a class='enlace marcador' href='?query=<%= params[:query] %>&start=<%= @previus_start %>'>
 							<i class="icn icn-nav-izq icn-sm input rojo-claro"></i>Anterior
 						</a> 
 					<% end %>
